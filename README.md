@@ -351,6 +351,72 @@ Done! `system`, `dark`, and `light` will all work as expected.
 
 If you need to support custom color schemes, you can define your own `@custom-variant` rules to match `data-theme=<whatever>`.
 
+### CSP
+
+Using a Content Security Policy (CSP) requires some manual configuration. The `ThemeProvider` can't possibly inject the script as it has no access of the nonce. But SvelteKit augments scripts in `app.html` with a nonce [automatically](https://svelte.dev/docs/kit/configuration#csp).
+
+See the [csp example](./examples/csp/) for a SvelteKit app with a CSP.
+
+Follow these steps to get it working:
+
+#### Create a config
+Create a config with your desired options, e.g. `lib/theme-config.ts`:
+
+```ts
+export const themeConfig: Config = {
+	attribute: 'data-theme',
+	storageKey: 'theme',
+	enableColorScheme: true,
+	defaultTheme: 'light',
+	enableSystem: false,
+	themes: ['light', 'dark-classic', 'tangerine', 'dark-tangerine', 'mint', 'dark-mint']
+};
+```
+
+#### ThemeProvider
+You need to pass `disableScriptInjection` to the `ThemeProvider` so it doesn't inject the script tag. Also pass the `themeConfig` you created.
+
+```svelte
+<script lang="ts">
+	import { themeConfig } from '$lib/theme-config';
+	import { ThemeProvider } from '@sejohnson/svelte-themes';
+	let { children } = $props();
+</script>
+
+<ThemeProvider {...themeConfig} disableScriptInjection>
+	{@render children?.()}
+</ThemeProvider>
+```
+
+#### app.html
+In your `app.html`, add a placeholder for the script tag. Do this just above `%sveltekit.head%`.
+```html
+<script nonce="%sveltekit.nonce%">
+	//svelte-themes.script//
+</script>
+```
+
+#### hook.server.ts
+In `src/hooks.server.ts`, add the following code to replace the placeholder with the actual script:
+
+```ts
+import type { Handle } from '@sveltejs/kit';
+import { themeScript } from '@sejohnson/svelte-themes';
+import { themeConfig } from '$lib/theme-config';
+
+export const handle = (async ({ event, resolve }) => {
+	return resolve(event, {
+		transformPageChunk: ({ html }) => {
+			return html.replace(
+				'//svelte-themes.script//',
+				`(${themeScript.toString()})(${JSON.stringify(themeConfig)})`
+			);
+		}
+	});
+}) satisfies Handle;
+```
+
+
 ## Discussion
 
 ### The Flash
