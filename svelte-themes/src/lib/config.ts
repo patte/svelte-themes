@@ -64,10 +64,6 @@ export type Config = Readonly<{
 	 */
 	domValues?: ValueObject | undefined;
 	/**
-	 * Nonce string to pass to the inline script and style elements for CSP headers.
-	 */
-	nonce?: string;
-	/**
 	 * Props to pass the inline script
 	 */
 	scriptProps?: ScriptProps;
@@ -78,7 +74,7 @@ export type Config = Readonly<{
 }>;
 
 export type ResolvedConfig = Readonly<
-	RequiredExcept<Config, 'domValues' | 'nonce' | 'scriptProps' | 'forcedTheme'>
+	RequiredExcept<Config, 'domValues' | 'scriptProps' | 'forcedTheme'>
 >;
 
 type RequiredExcept<T, K extends keyof T> = Required<Omit<T, K>> & Pick<T, K>;

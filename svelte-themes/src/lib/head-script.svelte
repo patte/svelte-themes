@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { ResolvedConfig } from './config.js';
-	import { isServer } from './utils.svelte.js';
 	import { script as scriptFn } from './dom.js';
 
 	// This script is used to set the initial theme state based on the user's saved preferences.
@@ -15,7 +14,6 @@
 		enableSystem,
 		enableColorScheme,
 		scriptProps,
-		nonce,
 		forcedTheme
 	}: Pick<
 		ResolvedConfig,
@@ -27,7 +25,6 @@
 		| 'enableSystem'
 		| 'enableColorScheme'
 		| 'scriptProps'
-		| 'nonce'
 		| 'forcedTheme'
 	> = $props();
 
@@ -47,9 +44,6 @@
 	let scriptAttributes = $derived.by(() => {
 		if (!scriptProps) return '';
 		let str = '';
-		if (isServer() && nonce) {
-			str += `nonce="${nonce}" `;
-		}
 		for (const [key, value] of Object.entries(scriptProps)) {
 			str += `${key}="${value}" `;
 		}

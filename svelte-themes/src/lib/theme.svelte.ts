@@ -144,9 +144,6 @@ export class Theme {
 
 	#disableAnimation() {
 		const css = document.createElement('style');
-		if (this.#config.nonce) {
-			css.setAttribute('nonce', this.#config.nonce);
-		}
 		css.appendChild(
 			document.createTextNode(
 				`*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}`

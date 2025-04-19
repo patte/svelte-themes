@@ -17,7 +17,6 @@
 		attribute = 'data-theme',
 		children,
 		domValues,
-		nonce,
 		forcedTheme,
 		scriptProps
 	}: Config & { children?: Snippet } = $props();
@@ -47,9 +46,6 @@
 			},
 			get domValues() {
 				return domValues;
-			},
-			get nonce() {
-				return nonce;
 			},
 			get forcedTheme() {
 				return forcedTheme;
@@ -93,7 +89,6 @@
 		{enableSystem}
 		{enableColorScheme}
 		{domValues}
-		{nonce}
 		{forcedTheme}
 		{scriptProps}
 	/>

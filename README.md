@@ -115,7 +115,6 @@ All your theme configuration is passed to ThemeProvider.
   - accepts `class` and `data-*` (meaning any data attribute, `data-mode`, `data-color`, etc.) ([example](#class-instead-of-data-attribute)).
 - `value`: Optional mapping of theme name to attribute value.
   - value is an `object` where key is the theme name (eg. `'dark'` or `'light'`) and value is the attribute value (eg. `'my-dark-theme'`) ([example](#differing-dom-attribute-and-theme-name)).
-- `nonce`: Optional nonce passed to the injected `script` tag, used to allow-list the next-themes script in your CSP.
 - `scriptProps`: Optional props to pass to the injected `script` tag ([example](#using-with-cloudflare-rocket-loader)).
 
 > [!NOTE]
