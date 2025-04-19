@@ -18,8 +18,9 @@
 		children,
 		domValues,
 		forcedTheme,
-		scriptProps
-	}: Config & { children?: Snippet } = $props();
+		scriptProps,
+		disableScriptInjection = false
+	}: Config & { children?: Snippet; disableScriptInjection: boolean } = $props();
 
 	if (!hasTheme()) {
 		const theme = new Theme({
@@ -80,7 +81,7 @@
 	});
 </script>
 
-{#if !watcher.hydrated}
+{#if !watcher.hydrated && !disableScriptInjection}
 	<HeadScript
 		{attribute}
 		{storageKey}
