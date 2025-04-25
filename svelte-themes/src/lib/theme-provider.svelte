@@ -20,7 +20,15 @@
 		forcedTheme,
 		scriptProps,
 		disableScriptInjection = false
-	}: Config & { children?: Snippet; disableScriptInjection: boolean } = $props();
+	}: Config & {
+		children?: Snippet;
+		/**
+		 * Disable automatic injection of the script.
+		 * See the CSP section in the README for details.
+		 * @default false
+		 */
+		disableScriptInjection?: boolean;
+	} = $props();
 
 	if (!hasTheme()) {
 		const theme = new Theme({
