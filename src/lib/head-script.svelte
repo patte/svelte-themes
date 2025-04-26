@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ResolvedConfig } from './config.js';
-	import { script as scriptFn } from './dom.js';
+	import { scriptAsString, type ScriptConfig } from './dom.js';
 
 	// This script is used to set the initial theme state based on the user's saved preferences.
 	// It allows us to avoid FOUC.
@@ -15,31 +15,7 @@
 		enableColorScheme,
 		scriptProps,
 		forcedTheme
-	}: Pick<
-		ResolvedConfig,
-		| 'attribute'
-		| 'storageKey'
-		| 'defaultTheme'
-		| 'themes'
-		| 'domValues'
-		| 'enableSystem'
-		| 'enableColorScheme'
-		| 'scriptProps'
-		| 'forcedTheme'
-	> = $props();
-
-	const scriptArgs = $derived(
-		JSON.stringify({
-			attribute,
-			storageKey,
-			defaultTheme,
-			themes,
-			domValues,
-			enableSystem,
-			enableColorScheme,
-			forcedTheme
-		})
-	);
+	}: ScriptConfig & Pick<ResolvedConfig, 'scriptProps'> = $props();
 
 	let scriptAttributes = $derived.by(() => {
 		if (!scriptProps) return '';
@@ -50,7 +26,18 @@
 		return str;
 	});
 
-	const scriptBody = $derived(`(${scriptFn.toString()})(${scriptArgs})`);
+	const scriptBody = $derived(
+		scriptAsString({
+			attribute,
+			storageKey,
+			defaultTheme,
+			themes,
+			domValues,
+			enableSystem,
+			enableColorScheme,
+			forcedTheme
+		})
+	);
 </script>
 
 <svelte:head>
