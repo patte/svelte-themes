@@ -1,15 +1,6 @@
 import type { ResolvedConfig } from './config.js';
 
-export function script({
-	attribute,
-	storageKey,
-	defaultTheme,
-	themes,
-	domValues,
-	enableSystem,
-	enableColorScheme,
-	forcedTheme
-}: Pick<
+export type ScriptConfig = Pick<
 	ResolvedConfig,
 	| 'attribute'
 	| 'storageKey'
@@ -19,7 +10,18 @@ export function script({
 	| 'enableSystem'
 	| 'enableColorScheme'
 	| 'forcedTheme'
->) {
+>;
+
+function script({
+	attribute,
+	storageKey,
+	defaultTheme,
+	themes,
+	domValues,
+	enableSystem,
+	enableColorScheme,
+	forcedTheme
+}: ScriptConfig) {
 	const el = document.documentElement;
 	const systemThemes = ['light', 'dark'];
 
@@ -67,4 +69,8 @@ export function script({
 			// Ignore
 		}
 	}
+}
+
+export function scriptAsString(props: ScriptConfig) {
+	return `(${script.toString()})(${JSON.stringify(props)})`;
 }
